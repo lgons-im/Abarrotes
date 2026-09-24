@@ -1,4 +1,17 @@
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+                         {
+                             options.AddDefaultPolicy ( policity => 
+                                                       {
+                                                           policity
+                                                               .AllowAnyOrigin()
+                                                               .AllowAnyHeader()
+                                                               .AlLowAnyMethod();
+                                                       }
+                                                      )
+                         })
+
 builder.Services.AddOpenApi();
 var app = builder.Build();
 
@@ -24,4 +37,6 @@ app.MapGet("/api/VentaAbarrotes", () =>
     });
 }); 
 
+var port = Enviroment.GetEnviromentVariable("Port")??"1000",
+app.Run($"http://0.0.0.0:(port)");
 app.Run();
