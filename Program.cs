@@ -1,19 +1,21 @@
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
-                         {
-                             options.AddDefaultPolicy ( policity => 
-                                                       {
-                                                           policity
-                                                               .AllowAnyOrigin()
-                                                               .AllowAnyHeader()
-                                                               .AlLowAnyMethod();
-                                                       }
-                                                      )
-                         })
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddOpenApi();
+
 var app = builder.Build();
+
+app.UseCors();
 
 app.MapGet("/", () => 
 {
@@ -37,6 +39,6 @@ app.MapGet("/api/VentaAbarrotes", () =>
     });
 }); 
 
-var port = Enviroment.GetEnviromentVariable("Port")??"1000",
-app.Run($"http://0.0.0.0:(port)");
-app.Run();
+var port = Environment.GetEnvironmentVariable("PORT") ?? "1000";
+
+app.Run($"http://0.0.0.0:{port}");
